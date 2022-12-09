@@ -1,8 +1,9 @@
-const config = require("./config/environment.config");
+const config = require("./app/config/environment.config.js");
 const express = require("express");
+const cors = require("cors");
 const cookieSession = require("cookie-session");
 const app = express();
-const cors = require("cors");
+
 var corsOptions = {
   credentials: true,
   origin: ["http://localhost:3000"],
@@ -22,9 +23,11 @@ app.use(
     httpOnly: true,
   })
 );
-console.log(`NODE_ENV=${config.NODE_ENV} ${process.env.NODE_ENV} ${process.env.DBPORT}`);
+console.log(
+  `NODE_ENV=${config.NODE_ENV} ${process.env.NODE_ENV} ${process.env.DBPORT}`
+);
 //CONNECTING TO MONGODB
-const db = require("./models");
+const db = require("./app/models");
 
 if (process.env.NODE_ENV === "production") {
   db.mongoose
@@ -65,8 +68,8 @@ app.get("/", (req, res) => {
 });
 
 //ROUTES
-require("./routes/auth.routes");
-require("./routes/user.routes");
+require("./app/routes/auth.routes")(app);
+require("./app/routes/user.routes")(app);
 
 const port = config.PORT || 8000;
 app.listen(port, () => console.log("Listening on", port));

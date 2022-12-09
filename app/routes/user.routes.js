@@ -11,10 +11,8 @@ module.exports = function (app) {
     );
     next();
   });
-
   app.get("/api/circlemarket_db/all", controller.allAccess);
 
-  //GET USER
   app.get(
     "/api/circlemarket_db/user",
     [authJwt.verifyToken],
