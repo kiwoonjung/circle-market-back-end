@@ -1,40 +1,72 @@
-require("dotenv").config();
-const fs = require("fs");
+const config = require("./config/environment.config");
 const express = require("express");
+const cookieSession = require("cookie-session");
 const app = express();
-
-const { v4: uuid } = require("uuid");
-const { PORT } = process.env || 8080;
 const cors = require("cors");
-const userRoutes = require("./routes/user");
+var corsOptions = {
+  credentials: true,
+  origin: ["http://localhost:3000"],
+};
+app.use(cors(corsOptions));
 
-app.use(cors());
-app.use(express.static("public"));
+// parse requests of content-type - application/json
+// app.use(express.static("public"));
 app.use(express.json());
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/users", userRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Hello there!!!");
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
-
+app.use(
+  cookieSession({
+    name: "circle-market-session",
+    secret: "COOKIE_SECRET", // should use as secret environment variable
+    httpOnly: true,
+  })
+);
+console.log(`NODE_ENV=${config.NODE_ENV} ${process.env.NODE_ENV} ${process.env.DBPORT}`);
 //CONNECTING TO MONGODB
 const db = require("./models");
 
-db.mongoose
-  .connect(`mongodb://localhost:27017/circle-market-local`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Successfully connect to MongoDB.");
-    // initial();
-  })
-  .catch((err) => {
-    console.log("Connection error", err);
-    process.exit();
-  });
+if (process.env.NODE_ENV === "production") {
+  db.mongoose
+    .connect(
+      `mongodb+srv://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    )
+    .then(() => {
+      console.log("Successfully connect to MongoDB.");
+    })
+    .catch((err) => {
+      console.error("Connection error", err);
+      process.exit();
+    });
+} else {
+  db.mongoose
+    .connect(
+      `mongodb://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    )
+    .then(() => {
+      console.log("Successfully connect to MongoDB.");
+    })
+    .catch((err) => {
+      console.error("Connection error", err);
+      process.exit();
+    });
+}
+
+app.get("/", (req, res) => {
+  res.json({ message: "Hello there. Welcome to circle market api" });
+});
+
+//ROUTES
+require("./routes/auth.routes");
+require("./routes/user.routes");
+
+const port = config.PORT || 8000;
+app.listen(port, () => console.log("Listening on", port));
