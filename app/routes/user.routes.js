@@ -14,7 +14,7 @@ module.exports = function (app) {
   app.get("/api/circlemarket_db/all", controller.allAccess);
 
   app.get(
-    "/api/circlemarket_db/user",
+    "/api/circlemarket_db/users",
     [authJwt.verifyToken],
     controller.userBoard
   );

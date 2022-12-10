@@ -9,7 +9,9 @@ exports.signup = (req, res) => {
     email: req.body.email,
     name: req.body.name,
     password: bcrypt.hashSync(req.body.password, 8),
+    timestamp: Date.now(),
   });
+
   user.save((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
