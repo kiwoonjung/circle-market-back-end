@@ -7,7 +7,7 @@ exports.list = (req, res) => {
 
 exports.post = (req, res) => {
   console.log("body", req.body.title);
-  console.log("files", req.files[0].path);
+  console.log("files", req.files);
 
   const post = new Post({
     imageUrl: req.files[0].path,
