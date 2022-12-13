@@ -1,8 +1,18 @@
 const db = require("../models");
 const { post: Post } = db;
 
-exports.list = (req, res) => {
-  res.status(200).json(db);
+exports.findAll = (req, res) => {
+  //GET ALL POSTS (currently fetching all but probably need to add condition)
+  Post.find()
+  .then((data)=>{
+    res.send(data);
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving posts from database.",
+    });
+  });
 };
 
 exports.post = (req, res) => {

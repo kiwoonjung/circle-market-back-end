@@ -27,7 +27,8 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/post/list", controller.list);
+  //get find all posts in database
+  app.get("/api/post/findAll", controller.findAll);
 
   app.post("/api/post/add", upload.any(), controller.post);
 };
