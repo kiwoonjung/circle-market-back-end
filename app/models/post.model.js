@@ -7,6 +7,7 @@ const Post = mongoose.model(
     category: String,
     price: Number,
     description: String,
+    imageUrl: String,
   })
 );
 

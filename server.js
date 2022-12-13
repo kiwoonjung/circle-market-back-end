@@ -70,6 +70,7 @@ app.get("/", (req, res) => {
 //ROUTES
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/post.routes")(app);
 
 const port = config.PORT || 8000;
 app.listen(port, () => console.log("Listening on", port));
