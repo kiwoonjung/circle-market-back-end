@@ -10,6 +10,7 @@ const Post = mongoose.model(
     description: String,
     address: String,
     condition: String,
+    timestamp: String,
   })
 );
 

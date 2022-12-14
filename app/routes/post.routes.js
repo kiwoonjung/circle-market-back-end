@@ -5,7 +5,7 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads");
+    cb(null, "./public/uploads");
   },
   filename: function (req, file, cb) {
     let extArray = file.mimetype.split("/");
@@ -29,6 +29,10 @@ module.exports = function (app) {
 
   //get find all posts in database
   app.get("/api/post/findAll", controller.findAll);
+
+  //get single post by id
+  app.get("/api/post/findOneRequest/:id", controller.findOneRequest);
+  app.put("/api/post/editItem/:id", controller.edit);
 
   app.post("/api/post/add", upload.any(), controller.post);
 };
