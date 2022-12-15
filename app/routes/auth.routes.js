@@ -10,8 +10,11 @@ module.exports = function (app) {
     );
     next();
   });
+  //get find all users in database
+  app.get("/api/auth/findAllUsers", controller.findAllUsers);
 
-  app.get("/api/auth/users", controller.findAllUsers);
+  //get single user by id
+  app.get("/api/auth/findOneUser/:id", controller.findOneUser);
 
   app.post(
     "/api/auth/signup",

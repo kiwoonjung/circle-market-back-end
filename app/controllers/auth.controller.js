@@ -19,6 +19,23 @@ exports.findAllUsers = (req, res) => {
     });
 };
 
+exports.findOneUser = (req, res) => {
+  const id = req.params.id;
+  User.find({
+    _id: id,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving posts from findOneRequest.",
+      });
+    });
+};
+
 exports.signup = (req, res) => {
   const user = new User({
     imageUrl: "/uploads/default_profile.svg",
