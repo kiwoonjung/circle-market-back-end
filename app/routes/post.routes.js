@@ -28,10 +28,10 @@ module.exports = function (app) {
   });
 
   //get find all posts in database
-  app.get("/api/post/findAll", controller.findAllPosts);
+  app.get("/api/post/findAllPosts", controller.findAllPosts);
 
   //get single post by id
-  app.get("/api/post/findOneRequest/:id", controller.findOneRequest);
+  app.get("/api/post/findOnePost/:id", controller.findOnePost);
   app.put("/api/post/editItem/:id", controller.edit);
 
   app.post("/api/post/add", upload.any(), controller.post);

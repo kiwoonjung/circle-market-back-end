@@ -19,24 +19,6 @@ exports.findAllPosts = (req, res) => {
     });
 };
 
-exports.findOneRequest = (req, res) => {
-  const id = req.params.id;
-  console.log(id);
-  Post.find({
-    _id: id,
-  })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while retrieving posts from findOneRequest.",
-      });
-    });
-};
-
 exports.post = (req, res) => {
   console.log("body", req.body.title);
   console.log("files", req.files[0]);
@@ -60,7 +42,7 @@ exports.post = (req, res) => {
   });
 };
 
-exports.findOneRequest = (req, res) => {
+exports.findOnePost = (req, res) => {
   const id = req.params.id;
   Post.find({
     _id: id,
