@@ -4,7 +4,7 @@ const {
 const db = require("../models");
 const { post: Post } = db;
 
-exports.findAll = (req, res) => {
+exports.findAllPosts = (req, res) => {
   //GET ALL POSTS (currently fetching all but probably need to add condition)
   Post.find()
     .then((data) => {
