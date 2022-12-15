@@ -38,5 +38,6 @@ module.exports = function (app) {
 
   app.put("/api/post/editItem/:id", controller.edit);
 
+  //add individual post
   app.post("/api/post/add", upload.any(), controller.post);
 };
