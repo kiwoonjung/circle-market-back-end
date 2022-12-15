@@ -94,6 +94,7 @@ exports.post = async (req, res) => {
     fs.unlinkSync(path);
   }
 
+exports.post = (req, res) => {
   const post = new Post({
     imageUrl: urls,
     userid: req.body.userid,
