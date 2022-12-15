@@ -4,8 +4,24 @@ const { user: User, refreshToken: RefreshToken } = db;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+exports.findAllUsers = (req, res) => {
+  //GET ALL USERS (currently fetching all but probably need to add condition)
+  User.find()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving users from database.",
+      });
+    });
+};
+
 exports.signup = (req, res) => {
   const user = new User({
+    imageUrl: "/uploads/default_profile.svg",
     email: req.body.email,
     name: req.body.name,
     password: bcrypt.hashSync(req.body.password, 8),

@@ -28,7 +28,7 @@ module.exports = function (app) {
   });
 
   //get find all posts in database
-  app.get("/api/post/findAll", controller.findAll);
+  app.get("/api/post/findAll", controller.findAllPosts);
 
   //get single post by id
   app.get("/api/post/findOneRequest/:id", controller.findOneRequest);
