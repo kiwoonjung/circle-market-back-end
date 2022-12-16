@@ -4,6 +4,7 @@ const Post = mongoose.model(
   "Post",
   new mongoose.Schema({
     imageUrl: String,
+    userid: String,
     title: String,
     category: String,
     price: Number,

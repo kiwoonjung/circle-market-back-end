@@ -25,6 +25,7 @@ exports.post = (req, res) => {
 
   const post = new Post({
     imageUrl: "/uploads/" + req.files[0].filename,
+    userid: req.body.userid,
     title: req.body.title,
     category: req.body.category,
     price: req.body.price,
