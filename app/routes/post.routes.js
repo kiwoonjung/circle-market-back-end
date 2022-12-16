@@ -32,6 +32,10 @@ module.exports = function (app) {
 
   //get single post by id
   app.get("/api/post/findOnePost/:id", controller.findOnePost);
+
+  //get posts by userid
+  app.get("/api/post/findPostsByUserId/:id", controller.findPostsByUserId);
+
   app.put("/api/post/editItem/:id", controller.edit);
 
   app.post("/api/post/add", upload.any(), controller.post);

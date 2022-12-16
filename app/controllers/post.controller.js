@@ -60,6 +60,23 @@ exports.findOnePost = (req, res) => {
     });
 };
 
+exports.findPostsByUserId = (req, res) => {
+  const id = req.params.id;
+  Post.find({
+    userid: id,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving posts from findOneRequest.",
+      });
+    });
+};
+
 exports.edit = (req, res) => {
   const id = req.params.id;
   console.log(req.body);
