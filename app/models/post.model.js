@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Post = mongoose.model(
   "Post",
   new mongoose.Schema({
-    imageUrl: String,
+    imageUrl: [],
     userid: String,
     title: String,
     category: String,
