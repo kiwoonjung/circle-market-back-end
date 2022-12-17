@@ -1,8 +1,7 @@
-const {
-  realtimebidding,
-} = require("googleapis/build/src/apis/realtimebidding");
 const db = require("../models");
+const cloudinary = require("../middlewares/cloudinary");
 const { post: Post } = db;
+const fs = require("fs");
 
 exports.findAllPosts = (req, res) => {
   //GET ALL POSTS (currently fetching all but probably need to add condition)
@@ -36,9 +35,20 @@ exports.findOneRequest = (req, res) => {
     });
 };
 
-exports.post = (req, res) => {
+exports.post = async (req, res) => {
+  const urls = [];
+  const files = req.files;
+  const uploader = async (path) =>
+    await cloudinary.uploads(path, req.body.userid); // TODO : Ideally get post id somehow
+  for (const file of files) {
+    const { path } = file;
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
+  }
+
   const post = new Post({
-    imageUrl: "/uploads/" + req.files[0].filename,
+    imageUrl: urls,
     userid: req.body.userid,
     title: req.body.title,
     category: req.body.category,

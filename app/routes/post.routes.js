@@ -1,22 +1,7 @@
 const controller = require("../controllers/post.controller");
+const upload = require('../middlewares/multer');
 const db = require("../models/index");
 const { post: Post } = db;
-const multer = require("multer");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/uploads");
-  },
-  filename: function (req, file, cb) {
-    let extArray = file.mimetype.split("/");
-    // let extension = extArray[extArray.length - 1];
-    // cb(null, file.fieldname + "-" + Date.now() + "." + extension);
-    let ext = file.originalname.substring(file.originalname.lastIndexOf("."));
-    cb(null, file.fieldname + "-" + Date.now() + "." + ext);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -39,5 +24,5 @@ module.exports = function (app) {
   app.put("/api/post/editItem/:id", controller.edit);
 
   //add individual post
-  app.post("/api/post/add", upload.any(), controller.post);
+  app.post("/api/post/add", upload.array('files'), controller.post);
 };
