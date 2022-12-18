@@ -1,5 +1,13 @@
 const mongoose = require("mongoose");
 
+
+const commentSchema = mongoose.Schema({
+  useravatar: String,
+  userid: String,
+  name: String,
+  comment: String,
+})
+
 const Post = mongoose.model(
   "Post",
   new mongoose.Schema({
@@ -12,12 +20,7 @@ const Post = mongoose.model(
     address: String,
     condition: String,
     timestamp: String,
-    comments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
+    comments: [commentSchema],
   })
 );
 
