@@ -115,7 +115,7 @@ exports.post = (req, res) => {
     res.send({ message: "Post was updated successfully!" });
   });
 };
-
+}
 exports.findOnePost = (req, res) => {
   const id = req.params.id;
   Post.find({
@@ -150,37 +150,29 @@ exports.findPostsByUserId = (req, res) => {
     });
 };
 
-// exports.postComment = async (req, res) => {
-//   const id = req.params.id;
-//   Post.find({
-//     _id: id,
-//   }).exec(async (err, post) => {
-//     if (err) {
-//       res.status(500).send({ message: err });
-//     }
-//     if (!post) {
-//       res.status(404).send({ message: `post not found` });
-//     }
-//     const comment = new Post([
-//       {
-//         userAvatar: req.body.userAvatar,
-//         userid: req.body.userId,
-//         name: req.body.userName,
-//         comment: req.body.comment,
-//         timestamp: Date.now(),
-//       },
-//     ]);
-//     console.log(comment);
+exports.postComment = (req, res) => {
+  const id = req.params.id;
+  Post.findOne({
+    _id: id,
+  }).exec((err, post) => {
+    if (err) {
+      res.status(500).send({ message: err });
+    }
+    if (!post) {
+      res.status(404).send({ message: `post not found` });
+    }
 
-//     comment.save((err, user) => {
-//       if (err) {
-//         res.status(500).send({ message: err });
-//         return;
-//       }
-//       res.send({ message: "Comment was updated successfully!" });
-//     });
-//   });
-// };
+    post.comments.push(req.body);
+    post.save((err)=>{
+      if(err){
+        res.status(500).send({message: err });
+        return;
+      }
+
+      res.send({message: "comments added successfully"})
+    })
+  });
+};
 
 // exports.findAllCommentByPostId = (req, res) => {
 //   const id = req.params.id;
