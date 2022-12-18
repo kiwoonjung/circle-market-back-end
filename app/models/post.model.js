@@ -12,6 +12,12 @@ const Post = mongoose.model(
     address: String,
     condition: String,
     timestamp: String,
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   })
 );
 

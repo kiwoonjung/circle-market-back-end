@@ -1,5 +1,5 @@
 const controller = require("../controllers/post.controller");
-const upload = require('../middlewares/multer');
+const upload = require("../middlewares/multer");
 const db = require("../models/index");
 const { post: Post } = db;
 
@@ -21,8 +21,15 @@ module.exports = function (app) {
   //get posts by userid
   app.get("/api/post/findPostsByUserId/:id", controller.findPostsByUserId);
 
-  app.put("/api/post/editItem/:id", controller.edit);
+  //update posts with given post id
+  app.put("/api/post/editItem/:id", upload.array("files"), controller.edit);
 
   //add individual post
-  app.post("/api/post/add", upload.array('files'), controller.post);
+  app.post("/api/post/add", upload.array("files"), controller.post);
+
+  // //update all comments by post id
+  // app.get("/api/post/findAllComments/:id", controller.findAllCommentByPostId);
+
+  //update individual comment
+  // app.post("/api/post/findOnePost/:id", controller.postComment);
 };

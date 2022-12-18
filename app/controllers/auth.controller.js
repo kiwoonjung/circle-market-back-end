@@ -38,7 +38,8 @@ exports.findOneUser = (req, res) => {
 
 exports.signup = (req, res) => {
   const user = new User({
-    imageUrl: "/uploads/default_profile.svg",
+    imageUrl:
+      "https://res.cloudinary.com/dhcnakbsj/image/upload/v1671243993/default_profile_b1zzj7.svg",
     email: req.body.email,
     name: req.body.name,
     password: bcrypt.hashSync(req.body.password, 8),

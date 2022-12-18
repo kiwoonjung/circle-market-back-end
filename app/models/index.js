@@ -1,3 +1,4 @@
+const { dlp_v2 } = require("googleapis");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 mongoose.Promise = global.Promise;
