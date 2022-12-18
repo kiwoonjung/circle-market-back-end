@@ -2,6 +2,8 @@ const db = require("../models");
 const cloudinary = require("../middlewares/cloudinary");
 const { post: Post } = db;
 const fs = require("fs");
+const { mongoose } = require("../models");
+const { url } = require("inspector");
 
 exports.findAllPosts = (req, res) => {
   //GET ALL POSTS (currently fetching all but probably need to add condition)
@@ -35,6 +37,51 @@ exports.findOneRequest = (req, res) => {
     });
 };
 
+exports.edit = async (req, res) => {
+  console.log(req.files);
+  const urls = [];
+  const files = req.files;
+  console.log();
+  const uploader = async (path) =>
+    await cloudinary.uploads(path, req.body.userid);
+  for (const file of files) {
+    const { path } = file;
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
+  }
+  const id = req.params.id;
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Empty Request body. Update cannot be empty",
+    });
+  }
+
+  Post.find({
+    _id: id,
+  }).exec(async (err, post) => {
+    if (err) {
+      res.status(500).send({ message: err });
+    }
+    if (!post) {
+      res.status(404).send({ message: `post not found` });
+    }
+    Post.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({
+            message: `cannot update post with id=${id}.`,
+          });
+        } else res.send({ message: "Post was updated successfully." });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "error updating",
+        });
+      });
+  });
+};
+
 exports.post = async (req, res) => {
   const urls = [];
   const files = req.files;
@@ -57,6 +104,7 @@ exports.post = async (req, res) => {
     address: req.body.address,
     condition: req.body.condition,
     timestamp: Date.now(),
+    comments: [],
   });
   post.save((err, user) => {
     if (err) {
@@ -101,36 +149,51 @@ exports.findPostsByUserId = (req, res) => {
     });
 };
 
-exports.edit = (req, res) => {
-  console.log(req.body);
-  const id = req.params.id;
-  if (!req.body) {
-    return res.status(400).send({
-      message: "Empty Request body. Update cannot be empty",
-    });
-  }
+// exports.postComment = async (req, res) => {
+//   const id = req.params.id;
+//   Post.find({
+//     _id: id,
+//   }).exec(async (err, post) => {
+//     if (err) {
+//       res.status(500).send({ message: err });
+//     }
+//     if (!post) {
+//       res.status(404).send({ message: `post not found` });
+//     }
+//     const comment = new Post([
+//       {
+//         userAvatar: req.body.userAvatar,
+//         userid: req.body.userId,
+//         name: req.body.userName,
+//         comment: req.body.comment,
+//         timestamp: Date.now(),
+//       },
+//     ]);
+//     console.log(comment);
 
-  Post.find({
-    _id: id,
-  }).exec(async (err, post) => {
-    if (err) {
-      res.status(500).send({ message: err });
-    }
-    if (!post) {
-      res.status(404).send({ message: `post not found` });
-    }
-    Post.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-      .then((data) => {
-        if (!data) {
-          res.status(404).send({
-            message: `cannot update post with id=${id}.`,
-          });
-        } else res.send({ message: "Post was updated successfully." });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: "error updating",
-        });
-      });
-  });
-};
+//     comment.save((err, user) => {
+//       if (err) {
+//         res.status(500).send({ message: err });
+//         return;
+//       }
+//       res.send({ message: "Comment was updated successfully!" });
+//     });
+//   });
+// };
+
+// exports.findAllCommentByPostId = (req, res) => {
+//   const id = req.params.id;
+//   Post.find({
+//     _id: id,
+//   })
+//     .then((data) => {
+//       res.send(data);
+//     })
+//     .catch((err) => {
+//       res.status(500).send({
+//         message:
+//           err.message ||
+//           "Some error occurred while retrieving posts from findAllCommentByPostId.",
+//       });
+//     });
+// };
