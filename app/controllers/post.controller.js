@@ -94,7 +94,6 @@ exports.post = async (req, res) => {
     fs.unlinkSync(path);
   }
 
-  exports.post = (req, res) => {
     const post = new Post({
       imageUrl: urls,
       userid: req.body.userid,
@@ -114,7 +113,6 @@ exports.post = async (req, res) => {
       }
       res.send({ message: "Post was updated successfully!" });
     });
-  };
 };
 exports.findOnePost = (req, res) => {
   const id = req.params.id;
