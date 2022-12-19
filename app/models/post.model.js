@@ -12,6 +12,7 @@ const Post = mongoose.model(
   "Post",
   new mongoose.Schema({
     imageUrl: [],
+    existingFiles: [],
     userid: String,
     title: String,
     category: String,

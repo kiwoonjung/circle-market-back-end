@@ -26,3 +26,7 @@ exports.uploads = (file, folder) => {
     );
   });
 };
+
+exports.delete = (fileArray) => {
+  cloudinary.uploader.destroy(fileArray);
+};
