@@ -27,6 +27,6 @@ exports.uploads = (file, folder) => {
   });
 };
 
-exports.delete = (file) => {
-    cloudinary.uploader.destroy(file.id);
-}
+exports.delete = (fileArray) => {
+  cloudinary.uploader.destroy(fileArray);
+};

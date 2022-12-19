@@ -60,10 +60,10 @@ exports.edit = (req, res) => {
     const existingImageIdsFrontend = JSON.parse(req.body.existingFiles).map(
       (image) => image.id
     );
-    const existingImageIdsBackend = post.imageUrl.map((image) => image.id);
 
-    for (image of existingImageIdsFrontend) {
-      const found = existingImageIdsBackend.includes(image); //check if each image in frontend exists in backend
+    const existingImageIdsBackend = post.imageUrl.map((image) => image.id);
+    for (let [index, image] of existingImageIdsBackend.entries()) {
+      const found = existingImageIdsFrontend.includes(image); //check if each image in frontend exists in backend
       if (!found) {
         //if not found delete (should implement frontend to delete from req.body)
         await cloudinary.delete(image, (err, res) => {
@@ -74,6 +74,7 @@ exports.edit = (req, res) => {
             });
           }
         });
+        post.imageUrl.splice(index,1); //delete index from database
       }
     }
 
