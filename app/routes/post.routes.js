@@ -28,7 +28,7 @@ module.exports = function (app) {
   app.post("/api/post/add", upload.array("files"), controller.post);
 
   //update all comments by post id
-  // app.get("/api/post/findAllComments/:id", controller.findAllCommentByPostId);
+  app.get("/api/post/findAllComments/:id", controller.findAllCommentByPostId);
 
   //post individual comment
   app.post("/api/post/addComment/:id", controller.postComment);

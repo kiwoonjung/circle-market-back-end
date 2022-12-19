@@ -94,28 +94,28 @@ exports.post = async (req, res) => {
     fs.unlinkSync(path);
   }
 
-exports.post = (req, res) => {
-  const post = new Post({
-    imageUrl: urls,
-    userid: req.body.userid,
-    title: req.body.title,
-    category: req.body.category,
-    price: req.body.price,
-    description: req.body.description,
-    address: req.body.address,
-    condition: req.body.condition,
-    timestamp: Date.now(),
-    comments: [],
-  });
-  post.save((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
-    res.send({ message: "Post was updated successfully!" });
-  });
+  exports.post = (req, res) => {
+    const post = new Post({
+      imageUrl: urls,
+      userid: req.body.userid,
+      title: req.body.title,
+      category: req.body.category,
+      price: req.body.price,
+      description: req.body.description,
+      address: req.body.address,
+      condition: req.body.condition,
+      timestamp: Date.now(),
+      comments: [],
+    });
+    post.save((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      res.send({ message: "Post was updated successfully!" });
+    });
+  };
 };
-}
 exports.findOnePost = (req, res) => {
   const id = req.params.id;
   Post.find({
@@ -163,30 +163,30 @@ exports.postComment = (req, res) => {
     }
 
     post.comments.push(req.body);
-    post.save((err)=>{
-      if(err){
-        res.status(500).send({message: err });
+    post.save((err) => {
+      if (err) {
+        res.status(500).send({ message: err });
         return;
       }
 
-      res.send({message: "comments added successfully"})
-    })
+      res.send({ message: "comments added successfully" });
+    });
   });
 };
 
-// exports.findAllCommentByPostId = (req, res) => {
-//   const id = req.params.id;
-//   Post.find({
-//     _id: id,
-//   })
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message:
-//           err.message ||
-//           "Some error occurred while retrieving posts from findAllCommentByPostId.",
-//       });
-//     });
-// };
+exports.findAllCommentByPostId = (req, res) => {
+  const id = req.params.id;
+  Post.find({
+    _id: id,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving posts from findAllCommentByPostId.",
+      });
+    });
+};
