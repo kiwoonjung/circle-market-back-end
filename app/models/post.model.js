@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-
 const commentSchema = mongoose.Schema({
   useravatar: String,
   userid: String,
   name: String,
   comment: String,
-})
+  timestamp: String,
+});
 
 const Post = mongoose.model(
   "Post",
