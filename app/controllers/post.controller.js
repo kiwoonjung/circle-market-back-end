@@ -4,6 +4,7 @@ const { post: Post } = db;
 const fs = require("fs");
 const { mongoose } = require("../models");
 const { url } = require("inspector");
+const { nextTick } = require("process");
 
 exports.findAllPosts = (req, res) => {
   //GET ALL POSTS (currently fetching all but probably need to add condition)
@@ -37,19 +38,7 @@ exports.findOneRequest = (req, res) => {
     });
 };
 
-exports.edit = async (req, res) => {
-  console.log(req.files);
-  const urls = [];
-  const files = req.files;
-  console.log();
-  const uploader = async (path) =>
-    await cloudinary.uploads(path, req.body.userid);
-  for (const file of files) {
-    const { path } = file;
-    const newPath = await uploader(path);
-    urls.push(newPath);
-    fs.unlinkSync(path);
-  }
+exports.edit = (req, res) => {
   const id = req.params.id;
   if (!req.body) {
     return res.status(400).send({
@@ -57,7 +46,7 @@ exports.edit = async (req, res) => {
     });
   }
 
-  Post.find({
+  Post.findOne({
     _id: id,
   }).exec(async (err, post) => {
     if (err) {
@@ -66,13 +55,69 @@ exports.edit = async (req, res) => {
     if (!post) {
       res.status(404).send({ message: `post not found` });
     }
-    Post.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+
+    //CHECK IF FRONTEND REQUEST IMAGE IDS MATCH BACKEND POST IMAGE IDS
+    const existingImageIdsFrontend = JSON.parse(req.body.existingFiles).map(
+      (image) => image.id
+    );
+    const existingImageIdsBackend = post.imageUrl.map((image) => image.id);
+
+    for (image of existingImageIdsFrontend) {
+      const found = existingImageIdsBackend.includes(image); //check if each image in frontend exists in backend
+      if (!found) {
+        //if not found delete (should implement frontend to delete from req.body)
+        await cloudinary.delete(image, (err, res) => {
+          if (err) {
+            res.status(500).send({
+              message:
+                "error deleting existing cloudinary images. please check if post exists.",
+            });
+          }
+        });
+      }
+    }
+
+    //ADD NEW IMAGE TO POST IF IT EXISTS
+    const urls = [];
+    if (req.files) {
+      const uploader = async (path) =>
+        await cloudinary.uploads(path, post.userid);
+      for (const file of req.files) {
+        const { path } = file;
+        const newPath = await uploader(path);
+        urls.push(newPath);
+        fs.unlinkSync(path);
+      }
+    }
+
+    //PUSH to existing post.imageUrl along with added images
+    for (const url of urls) {
+      post.imageUrl.push(url);
+    }
+
+    //UPDATE DATABASE
+    Post.findByIdAndUpdate(
+      id,
+      {
+        title: req.body.title,
+        category: req.body.category,
+        price: req.body.price,
+        description: req.body.description,
+        address: req.body.address,
+        condition: req.body.condition,
+        imageUrl: post.imageUrl,
+        existingFiles: post.imageUrl,
+      },
+      { useFindAndModify: false }
+    )
       .then((data) => {
         if (!data) {
           res.status(404).send({
             message: `cannot update post with id=${id}.`,
           });
-        } else res.send({ message: "Post was updated successfully." });
+        } else {
+          res.send({ message: "Post was updated successfully." });
+        }
       })
       .catch((err) => {
         res.status(500).send({
@@ -94,25 +139,25 @@ exports.post = async (req, res) => {
     fs.unlinkSync(path);
   }
 
-    const post = new Post({
-      imageUrl: urls,
-      userid: req.body.userid,
-      title: req.body.title,
-      category: req.body.category,
-      price: req.body.price,
-      description: req.body.description,
-      address: req.body.address,
-      condition: req.body.condition,
-      timestamp: Date.now(),
-      comments: [],
-    });
-    post.save((err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
-      }
-      res.send({ message: "Post was updated successfully!" });
-    });
+  const post = new Post({
+    imageUrl: urls,
+    userid: req.body.userid,
+    title: req.body.title,
+    category: req.body.category,
+    price: req.body.price,
+    description: req.body.description,
+    address: req.body.address,
+    condition: req.body.condition,
+    timestamp: Date.now(),
+    comments: [],
+  });
+  post.save((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    res.send({ message: "Post was updated successfully!" });
+  });
 };
 exports.findOnePost = (req, res) => {
   const id = req.params.id;
