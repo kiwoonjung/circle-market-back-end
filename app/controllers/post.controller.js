@@ -74,7 +74,7 @@ exports.edit = (req, res) => {
             });
           }
         });
-        post.imageUrl.splice(index,1); //delete index from database
+        post.imageUrl.splice(index, 1); //delete index from database
       }
     }
 
@@ -82,7 +82,7 @@ exports.edit = (req, res) => {
     const urls = [];
     if (req.files) {
       const uploader = async (path) =>
-        await cloudinary.uploads(path, post.userid);
+        await cloudinary.uploads(path, `${post.userid}/${post.uuid}`);
       for (const file of req.files) {
         const { path } = file;
         const newPath = await uploader(path);
@@ -129,10 +129,15 @@ exports.edit = (req, res) => {
 };
 
 exports.post = async (req, res) => {
+  if (!req.body) {
+    res.status(400).send({ message: "Post can not be empty!" });
+    return;
+  }
+
+  //Cloudinary
   const urls = [];
   const files = req.files;
-  const uploader = async (path) =>
-    await cloudinary.uploads(path, req.body.userid); // TODO : Ideally get post id somehow
+  const uploader = async (path) => await cloudinary.uploads(path, `${req.body.userid}/${req.body.uuid}`); // TODO : Ideally get post id somehow
   for (const file of files) {
     const { path } = file;
     const newPath = await uploader(path);
@@ -142,6 +147,8 @@ exports.post = async (req, res) => {
 
   const post = new Post({
     imageUrl: urls,
+    existingFiles: urls,
+    uuid: req.body.uuid,
     userid: req.body.userid,
     title: req.body.title,
     category: req.body.category,
@@ -159,6 +166,8 @@ exports.post = async (req, res) => {
     }
     res.send({ message: "Post was updated successfully!" });
   });
+
+
 };
 exports.findOnePost = (req, res) => {
   const id = req.params.id;

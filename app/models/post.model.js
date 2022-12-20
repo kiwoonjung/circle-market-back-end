@@ -13,6 +13,7 @@ const Post = mongoose.model(
   new mongoose.Schema({
     imageUrl: [],
     existingFiles: [],
+    uuid: String,
     userid: String,
     title: String,
     category: String,
