@@ -137,7 +137,8 @@ exports.post = async (req, res) => {
   //Cloudinary
   const urls = [];
   const files = req.files;
-  const uploader = async (path) => await cloudinary.uploads(path, `${req.body.userid}/${req.body.uuid}`); // TODO : Ideally get post id somehow
+  const uploader = async (path) =>
+    await cloudinary.uploads(path, `${req.body.userid}/${req.body.uuid}`); // TODO : Ideally get post id somehow
   for (const file of files) {
     const { path } = file;
     const newPath = await uploader(path);
@@ -166,8 +167,6 @@ exports.post = async (req, res) => {
     }
     res.send({ message: "Post was updated successfully!" });
   });
-
-
 };
 exports.findOnePost = (req, res) => {
   const id = req.params.id;
