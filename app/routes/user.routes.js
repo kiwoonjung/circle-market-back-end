@@ -1,6 +1,7 @@
 const { authJwt } = require("../middlewares/");
 const controller = require("../controllers/user.controller");
 const db = require("../models/index");
+const upload = require("../middlewares/multer");
 const { user: User } = db;
 
 module.exports = function (app) {
@@ -18,4 +19,7 @@ module.exports = function (app) {
     [authJwt.verifyToken],
     controller.userBoard
   );
+
+  //edit user profile
+  app.put("/api/user/editProfile/:id", controller.editUserProfile);
 };
