@@ -128,6 +128,7 @@ exports.edit = (req, res) => {
   });
 };
 
+//CREATE A NEW POST
 exports.post = async (req, res) => {
   if (!req.body) {
     res.status(400).send({ message: "Post can not be empty!" });
