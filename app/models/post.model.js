@@ -15,6 +15,7 @@ const Post = mongoose.model(
     existingFiles: [],
     uuid: String,
     userid: String,
+    name: String,
     title: String,
     category: String,
     price: Number,
