@@ -80,9 +80,10 @@ exports.edit = (req, res) => {
 
     //ADD NEW IMAGE TO POST IF IT EXISTS
     const urls = [];
+    console.log(post.title);
     if (req.files) {
       const uploader = async (path) =>
-        await cloudinary.uploads(path, `${post.userid}/${post.uuid}`);
+        await cloudinary.uploads(path, `${post.name}/${post.title}`);
       for (const file of req.files) {
         const { path } = file;
         const newPath = await uploader(path);
@@ -139,7 +140,7 @@ exports.post = async (req, res) => {
   const urls = [];
   const files = req.files;
   const uploader = async (path) =>
-    await cloudinary.uploads(path, `${req.body.userid}/${req.body.uuid}`); // TODO : Ideally get post id somehow
+    await cloudinary.uploads(path, `${req.body.name}/${req.body.title}`); // TODO : Ideally get post id somehow
   for (const file of files) {
     const { path } = file;
     const newPath = await uploader(path);
@@ -152,6 +153,7 @@ exports.post = async (req, res) => {
     existingFiles: urls,
     uuid: req.body.uuid,
     userid: req.body.userid,
+    name: req.body.name,
     title: req.body.title,
     category: req.body.category,
     price: req.body.price,

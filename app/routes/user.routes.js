@@ -12,13 +12,6 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/circlemarket_db/all", controller.allAccess);
-
-  app.get(
-    "/api/circlemarket_db/users",
-    [authJwt.verifyToken],
-    controller.userBoard
-  );
 
   //edit user profile
   app.put("/api/user/editProfile/:id", controller.editUserProfile);
