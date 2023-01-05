@@ -21,7 +21,7 @@ exports.uploads = (file, folder) => {
       },
       {
         resource_type: "auto",
-        folder: `posts/${folder}`,
+        folder: `users/${folder}`,
       }
     );
   });
