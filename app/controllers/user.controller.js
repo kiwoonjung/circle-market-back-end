@@ -4,7 +4,7 @@ const cloudinary = require("../middlewares/cloudinary");
 const fs = require("fs");
 var bcrypt = require("bcryptjs");
 
-exports.editUserProfile = (req, res) => {
+exports.editUserProfile = async (req, res) => {
   User.findOne({ userId: req.params.id }, (err, foundProfile) => {
     if (err) {
       console.log(err);
@@ -28,5 +28,29 @@ exports.editUserProfile = (req, res) => {
         );
       }
     }
+  });
+
+  //Cloudinary
+  const urls = [];
+  const files = req.files;
+  const uploader = async (path) =>
+    await cloudinary.uploads(path, `${req.body.name}/${req.body.title}`);
+  for (const file of files) {
+    const { path } = file;
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
+  }
+
+  const profileImage = new User({
+    imageUrl: urls,
+  });
+
+  profileImage.save((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    res.send({ message: "Post was updated successfully!" });
   });
 };
