@@ -140,7 +140,7 @@ exports.post = async (req, res) => {
   const urls = [];
   const files = req.files;
   const uploader = async (path) =>
-    await cloudinary.uploads(path, `${req.body.email}/${req.body.title}`); // TODO : Ideally get post id somehow
+    await cloudinary.uploads(path, `${req.body.name}/${req.body.title}`); // TODO : Ideally get post id somehow
   for (const file of files) {
     const { path } = file;
     const newPath = await uploader(path);
