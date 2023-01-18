@@ -5,7 +5,7 @@ const commentSchema = mongoose.Schema({
   userid: String,
   name: String,
   comment: String,
-  timestamp: String,
+  timestamp: Date,
 });
 
 const Post = mongoose.model(
@@ -17,12 +17,13 @@ const Post = mongoose.model(
     userid: String,
     name: String,
     title: String,
+    views: Number,
     category: String,
     price: Number,
     description: String,
     address: String,
     condition: String,
-    timestamp: String,
+    timestamp: Date,
     comments: [commentSchema],
   })
 );

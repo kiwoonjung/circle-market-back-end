@@ -155,6 +155,7 @@ exports.post = async (req, res) => {
     userid: req.body.userid,
     name: req.body.name,
     title: req.body.title,
+    views: 0,
     category: req.body.category,
     price: req.body.price,
     description: req.body.description,
