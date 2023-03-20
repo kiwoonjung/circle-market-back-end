@@ -1,9 +1,13 @@
 
 <h1 align="center">
-  <br>
+  <br
+  <a href="https://circlemarket.ca" target="_blank" rel="noopener noreferrer">
   <img src="https://res.cloudinary.com/dhcnakbsj/image/upload/v1671415529/CIRCLE_LOGO_gzmzgb.png" alt="circlemarket" background="white" width="200">
+  </a>
   <br>
+   <a href="https://circlemarket.ca" target="_blank" rel="noopener noreferrer">
   CircleMarket
+  </a>
   <br>
 </h1>
 
