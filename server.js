@@ -29,39 +29,28 @@ console.log(
 //CONNECTING TO MONGODB
 const db = require("./app/models");
 
-if (process.env.NODE_ENV === "production") {
-  db.mongoose
-    .connect(
-      `mongodb+srv://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    )
-    .then(() => {
-      console.log("Successfully connect to MongoDB.");
-    })
-    .catch((err) => {
-      console.error("Connection error", err);
-      process.exit();
-    });
-} else {
-  db.mongoose
-    .connect(
-      `mongodb://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    )
-    .then(() => {
-      console.log("Successfully connect to MongoDB.");
-    })
-    .catch((err) => {
-      console.error("Connection error", err);
-      process.exit();
-    });
-}
+// const connectionString =
+//   process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
+//     ? `mongodb+srv://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`
+//     : `mongodb://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`;
+
+const connectionString =
+  process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
+    ? `mongodb+srv://kiwoon0627:jkw14524562@circlemarket-server.lmw8s6t.mongodb.net/?retryWrites=true&w=majority`
+    : `mongodb://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`;
+
+db.mongoose
+  .connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log(`Successfully connected to MongoDB - ${process.env.NODE_ENV}`);
+  })
+  .catch((err) => {
+    console.error("Connection error", err);
+    process.exit();
+  });
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello there. Welcome to circle market api" });
