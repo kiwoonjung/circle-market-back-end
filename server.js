@@ -6,7 +6,12 @@ const app = express();
 
 var corsOptions = {
   credentials: true,
-  origin: ["http://localhost:3000"],
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "https://www.circlemarket.ca",
+  ],
 };
 app.use(cors(corsOptions));
 
@@ -23,9 +28,7 @@ app.use(
     httpOnly: true,
   })
 );
-console.log(
-  `NODE_ENV=${config.NODE_ENV} ${process.env.NODE_ENV} ${process.env.DBPORT}`
-);
+console.log(`NODE_ENV=${config.NODE_ENV}`);
 //CONNECTING TO MONGODB
 const db = require("./app/models");
 
