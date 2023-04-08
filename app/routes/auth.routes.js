@@ -10,17 +10,31 @@ module.exports = function (app) {
     //   "Access-Control-Allow-Origin",
     //   "*"
     // );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
-    res.setHeader(
+    // res.setHeader(
+    //   "Access-Control-Allow-Headers",
+    //   "x-access-token, Origin, Content-Type, Accept"
+    // );
+    // res.setHeader("Access-Control-Allow-Origin", "*");
+    // res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+    // res.setHeader(
+    //   "Access-Control-Allow-Methods",
+    //   "Content-Type",
+    //   "Authorization"
+    // );
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader(
       "Access-Control-Allow-Methods",
-      "Content-Type",
-      "Authorization"
+      "POST, PUT, GET, OPTIONS, DELETE"
     );
+    response.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,observe"
+    );
+    response.setHeader("Access-Control-Max-Age", "3600");
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Expose-Headers", "Authorization");
+    response.addHeader("Access-Control-Expose-Headers", "responseType");
+    response.addHeader("Access-Control-Expose-Headers", "observe");
     next();
   });
   //get find all users in database
