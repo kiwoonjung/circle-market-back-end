@@ -12,6 +12,10 @@ module.exports = function (app) {
     //   "Access-Control-Allow-Origin",
     //   "*"
     // );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "x-access-token, Origin, Content-Type, Accept"
+    );
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
     res.setHeader(
