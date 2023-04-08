@@ -16,7 +16,6 @@
     "registration",
     "authentication",
     "authorization",
-    "mongodb",
     "mongoose"
   ],
   "author": "Kiwoon",

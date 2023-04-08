@@ -32,15 +32,12 @@ console.log(`NODE_ENV=${config.NODE_ENV}`);
 //CONNECTING TO MONGODB
 const db = require("./app/models");
 
-// const connectionString =
-//   process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
-//     ? `mongodb+srv://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`
-//     : `mongodb://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`;
-
 const connectionString =
   process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
-    ? `mongodb+srv://kiwoon0627:jkw14524562@circlemarket-server.lmw8s6t.mongodb.net/?retryWrites=true&w=majority`
-    : `mongodb://${process.env.DBHOST}:${process.env.DBPORT}/${process.env.DBNAME}`;
+    ? `mongodb+srv://${process.env.REACT_APP_DB_USER}:${process.env.REACT_APP_DB_PW}@${process.env.REACT_APP_DB_SERVER}/${process.env.REACT_APP_DB_NAME}?retryWrites=true&w=majority`
+    : `mongodb://${process.env.REACT_APP_DB_HOST}:${process.env.REACT_APP_DB_PORT}/${process.env.REACT_APP_DB_NAME}`;
+
+// const connectionString = `mongodb://${process.env.REACT_APP_DB_USER}:${process.env.REACT_APP_DB_PW}@${REACT_APP_DB_SERVER}/${process.env.REACT_APP_DB_NAME}?retryWrites=true&w=majority`;
 
 db.mongoose
   .connect(connectionString, {
