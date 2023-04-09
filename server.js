@@ -34,7 +34,7 @@ const db = require("./app/models");
 
 const connectionString =
   process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging"
-    ? `mongodb+srv://${process.env.REACT_APP_DB_USER}:${process.env.REACT_APP_DB_PW}@${process.env.REACT_APP_DB_SERVER}/${process.env.REACT_APP_DB_NAME}?retryWrites=true&w=majority`
+    ? `mongodb+srv://circlemarket:16AvJnjGDUYBbmJX@circlemarket-server.lmw8s6t.mongodb.net/circlemarket?retryWrites=true&w=majority`
     : `mongodb://${process.env.REACT_APP_DB_HOST}:${process.env.REACT_APP_DB_PORT}/${process.env.REACT_APP_DB_NAME}`;
 
 // const connectionString = `mongodb://${process.env.REACT_APP_DB_USER}:${process.env.REACT_APP_DB_PW}@${REACT_APP_DB_SERVER}/${process.env.REACT_APP_DB_NAME}?retryWrites=true&w=majority`;
