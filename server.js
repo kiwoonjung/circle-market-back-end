@@ -4,17 +4,19 @@ const cors = require("cors");
 const cookieSession = require("cookie-session");
 const app = express();
 
-var corsOptions = {
-  credentials: true,
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:8080",
-    "http://localhost:8000",
-    "https://www.circlemarket.ca",
-    "https://api.circlemarket.ca",
-  ],
-};
-app.use(cors(corsOptions));
+// var corsOptions = {
+//   credentials: true,
+//   origin: [
+//     "http://localhost:3000",
+//     "http://localhost:8080",
+//     "http://localhost:8000",
+//     "https://www.circlemarket.ca",
+//     "https://api.circlemarket.ca",
+//   ],
+// };
+// app.use(cors(corsOptions));
+
+app.use(cors({ origin: true }));
 
 // parse requests of content-type - application/json
 app.use(express.static("public"));
