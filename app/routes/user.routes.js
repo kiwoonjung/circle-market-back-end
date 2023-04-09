@@ -12,7 +12,7 @@ module.exports = function (app) {
     //   "Access-Control-Allow-Origin",
     //   "*"
     // );
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "https://circlemarket.ca");
     res.header(
       "Access-Control-Allow-Methods",
       "GET,HEAD,OPTIONS,POST,PUT,DELETE"

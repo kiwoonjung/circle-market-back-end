@@ -11,6 +11,7 @@ var corsOptions = {
     "http://localhost:8080",
     "http://localhost:8000",
     "https://www.circlemarket.ca",
+    "https://api.circlemarket.ca",
   ],
 };
 app.use(cors(corsOptions));
